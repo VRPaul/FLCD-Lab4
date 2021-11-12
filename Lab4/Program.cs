@@ -5,10 +5,21 @@ namespace Lab4
 {
     class Program
     {
+        /// <summary>
+        /// Runs the application by printing the list of available commands while waiting for input only if the
+        /// initialized automaton is valid
+        /// </summary>
+        /// <param name="args"></param>
         static void Main(string[] args)
         {
-            var fa = new FiniteAutomata("FA.in");
+            var fa = new FiniteAutomaton("FA.in");
 
+            if (!fa.CheckIfValid())
+            {
+                Console.WriteLine("Not a valid FA");
+                goto Exit;
+            }
+            
             while (true)
             {
                 Console.WriteLine("");
@@ -47,7 +58,11 @@ namespace Lab4
             Console.WriteLine("Exiting program");
         }
 
-        private static void PrintStates(FiniteAutomata fa)
+        /// <summary>
+        /// Gets the list of states from a given FA and prints it
+        /// </summary>
+        /// <param name="fa">A given FA</param>
+        private static void PrintStates(FiniteAutomaton fa)
         {
             Console.WriteLine();
             var result = fa.Q.Aggregate("States: ", (current, item) => current + item + " ");
@@ -55,7 +70,11 @@ namespace Lab4
             Console.WriteLine(result);
         }
 
-        private static void PrintAlphabet(FiniteAutomata fa)
+        /// <summary>
+        /// Gets the alphabet from a given FA and prints it
+        /// </summary>
+        /// <param name="fa">A given FA</param>
+        private static void PrintAlphabet(FiniteAutomaton fa)
         {
             Console.WriteLine();
             var result = fa.E.Aggregate("Alphabet: ", (current, item) => current + item + " ");
@@ -63,7 +82,11 @@ namespace Lab4
             Console.WriteLine(result);
         }
 
-        private static void PrintTransition(FiniteAutomata fa)
+        /// <summary>
+        /// Gets the list of transitions from a given FA and prints it
+        /// </summary>
+        /// <param name="fa">A given FA</param>
+        private static void PrintTransition(FiniteAutomaton fa)
         {
             Console.WriteLine();
             var result = fa.S.Aggregate("Transitions: \n", (current, item) => current + item + " \n");
@@ -71,7 +94,11 @@ namespace Lab4
             Console.WriteLine(result);
         }
 
-        private static void PrintFinalStates(FiniteAutomata fa)
+        /// <summary>
+        /// Gets the list of final states from a given FA and prints it
+        /// </summary>
+        /// <param name="fa">A given FA</param>
+        private static void PrintFinalStates(FiniteAutomaton fa)
         {
             Console.WriteLine();
             var result = fa.F.Aggregate("Final states: ", (current, item) => current + item + " ");
@@ -79,7 +106,12 @@ namespace Lab4
             Console.WriteLine(result);
         }
 
-        private static void CheckSequence(FiniteAutomata fa)
+        /// <summary>
+        /// Checks if a sequence if valid. First we need to determine if the FA si a DFA. If it's not we print a message
+        /// otherwise we start checking the sequence.
+        /// </summary>
+        /// <param name="fa"></param>
+        private static void CheckSequence(FiniteAutomaton fa)
         {
             if (!fa.CheckIfDFA())
             {
